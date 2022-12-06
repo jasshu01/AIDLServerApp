@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.os.Process;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 public class MyAIDLServerService extends Service {
 
@@ -51,8 +52,16 @@ public class MyAIDLServerService extends Service {
             Log.d("myserver", "package name " + packageName);
             Log.d("myserver", "Client id  = " + clientPID);
             Log.d("myserver", "Server id  = " + getPID());
+            Log.d("myserver", "Server Connections  = " + getConnectionCount());
             Log.d("myserver", "message = " + messageFromClient);
+            Log.d("myserver", "-----------");
 
+//            if (MainActivity.receivedMessage != null) {
+//
+//                String txt = "ClientPackageName : " + packageName + "\n" + "Client PID : " + clientPID + "\n Message From Client : " + messageFromClient;
+//                Toast.makeText(getApplicationContext(), txt, Toast.LENGTH_LONG).show();
+//                MainActivity.receivedMessage.setText("ClientPackageName : " + packageName + "\n" + "Client PID : " + clientPID + "\n Message From Client : " + messageFromClient);
+//            }
         }
     };
 }
