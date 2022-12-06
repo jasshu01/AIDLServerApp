@@ -12,6 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AIDLServerApp"
         tools:targetApi="31">
+        <service
+            android:name=".MyAIDLServerService"
+            android:enabled="true"
+            android:process=":remote"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.jasshugarg.myAIDLSERVER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
