@@ -2,6 +2,7 @@ package com.example.aidlserverapp;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Process;
@@ -48,7 +49,7 @@ public class MyAIDLServerService extends Service {
         }
 
         @Override
-        public void setDisplayData(String packageName, int clientPID, String messageFromClient) throws RemoteException {
+        public String setDisplayData(String packageName, int clientPID, String messageFromClient) throws RemoteException {
             Log.d("myserver", "package name " + packageName);
             Log.d("myserver", "Client id  = " + clientPID);
             Log.d("myserver", "Server id  = " + getPID());
@@ -56,12 +57,29 @@ public class MyAIDLServerService extends Service {
             Log.d("myserver", "message = " + messageFromClient);
             Log.d("myserver", "-----------");
 
-//            if (MainActivity.receivedMessage != null) {
-//
-//                String txt = "ClientPackageName : " + packageName + "\n" + "Client PID : " + clientPID + "\n Message From Client : " + messageFromClient;
-//                Toast.makeText(getApplicationContext(), txt, Toast.LENGTH_LONG).show();
-//                MainActivity.receivedMessage.setText("ClientPackageName : " + packageName + "\n" + "Client PID : " + clientPID + "\n Message From Client : " + messageFromClient);
-//            }
+
+            SharedPreferences sp = getSharedPreferences("AIDL_Server", getApplicationContext().MODE_MULTI_PROCESS);
+            SharedPreferences.Editor ed = sp.edit();
+            String txt = "last Message \n" + "ClientPackageName : " + packageName + "\n" + "Client PID : " + clientPID + "\n Message From Client : " + messageFromClient;
+
+            ed.putString("AIDL_Client_Server", txt);
+            ed.apply();
+
+
+
+            String sendMessage = "";
+            sendMessage += "Package Name : " + getPackageName() + "\n";
+            sendMessage += "Package PID : " + getPID() + "\n";
+            sendMessage += "Message Received" + "\n";
+
+
+            if (MainActivity.receivedMessage != null) {
+                MainActivity.receivedMessage.setText(txt);
+            }
+
+
+            return sendMessage;
+
         }
     };
 }
