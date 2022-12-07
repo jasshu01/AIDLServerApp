@@ -68,6 +68,22 @@ public class MyAIDLServerService extends Service {
             Log.d("myserver", "-----------");
 
 
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    int i = 0;
+                    while (i < 50) {
+                        Log.d("myserver", packageName + " " + i++);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            thread.start();
             SharedPreferences sp = getSharedPreferences("AIDL_Server", getApplicationContext().MODE_MULTI_PROCESS);
             SharedPreferences.Editor ed = sp.edit();
             String txt = "last Message \n" + "ClientPackageName : " + packageName + "\n" + "Client PID : " + clientPID + "\n Message From Client : " + messageFromClient;
