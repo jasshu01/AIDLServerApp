@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     public static TextView receivedMessage = null;
 
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,4 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("myserver", "onstart" + getSharedPreferences("AIDL_Server", MODE_PRIVATE).getString("AIDL_Client_Server", "Nothing to Show"));
     }
+
+
+
+
+
+
+
 }

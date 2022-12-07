@@ -2,6 +2,7 @@ package com.example.aidlserverapp;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
@@ -12,23 +13,31 @@ import android.widget.Toast;
 
 public class MyAIDLServerService extends Service {
 
-    int connectionCount;
+
+    private static int connectionCount;
 
     public MyAIDLServerService() {
         connectionCount = 0;
-
+        Log.d("myserver", " " + connectionCount);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        connectionCount++;
 
+        Log.d("myserver", " " + intent.getPackage());
+        Log.d("myserver", " " + connectionCount);
+        MyAIDLServerService.connectionCount++;
+        Log.d("myserver", " " + connectionCount);
         return binder;
     }
 
     @Override
+    public void unbindService(ServiceConnection conn) {
+        super.unbindService(conn);
+    }
+
+    @Override
     public boolean onUnbind(Intent intent) {
-        connectionCount--;
         return super.onUnbind(intent);
     }
 
@@ -45,7 +54,8 @@ public class MyAIDLServerService extends Service {
 
         @Override
         public int getConnectionCount() throws RemoteException {
-            return connectionCount;
+
+            return MyAIDLServerService.connectionCount;
         }
 
         @Override
@@ -53,7 +63,7 @@ public class MyAIDLServerService extends Service {
             Log.d("myserver", "package name " + packageName);
             Log.d("myserver", "Client id  = " + clientPID);
             Log.d("myserver", "Server id  = " + getPID());
-            Log.d("myserver", "Server Connections  = " + getConnectionCount());
+//            Log.d("myserver", "Server Connections  = " + getConnectionCount());
             Log.d("myserver", "message = " + messageFromClient);
             Log.d("myserver", "-----------");
 
@@ -66,16 +76,10 @@ public class MyAIDLServerService extends Service {
             ed.apply();
 
 
-
             String sendMessage = "";
             sendMessage += "Package Name : " + getPackageName() + "\n";
             sendMessage += "Package PID : " + getPID() + "\n";
             sendMessage += "Message Received" + "\n";
-
-
-            if (MainActivity.receivedMessage != null) {
-                MainActivity.receivedMessage.setText(txt);
-            }
 
 
             return sendMessage;
