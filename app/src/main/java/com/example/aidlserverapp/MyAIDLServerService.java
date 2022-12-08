@@ -14,20 +14,14 @@ import android.widget.Toast;
 public class MyAIDLServerService extends Service {
 
 
-    private static int connectionCount;
-
     public MyAIDLServerService() {
-        connectionCount = 0;
-        Log.d("myserver", " " + connectionCount);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
 
         Log.d("myserver", " " + intent.getPackage());
-        Log.d("myserver", " " + connectionCount);
-        MyAIDLServerService.connectionCount++;
-        Log.d("myserver", " " + connectionCount);
+
         return binder;
     }
 
@@ -52,18 +46,13 @@ public class MyAIDLServerService extends Service {
             return Process.myPid();
         }
 
-        @Override
-        public int getConnectionCount() throws RemoteException {
 
-            return MyAIDLServerService.connectionCount;
-        }
 
         @Override
         public String setDisplayData(String packageName, int clientPID, String messageFromClient) throws RemoteException {
             Log.d("myserver", "package name " + packageName);
             Log.d("myserver", "Client id  = " + clientPID);
             Log.d("myserver", "Server id  = " + getPID());
-//            Log.d("myserver", "Server Connections  = " + getConnectionCount());
             Log.d("myserver", "message = " + messageFromClient);
             Log.d("myserver", "-----------");
 
@@ -83,7 +72,7 @@ public class MyAIDLServerService extends Service {
                     }
                 }
             };
-            thread.start();
+//            thread.start();
             SharedPreferences sp = getSharedPreferences("AIDL_Server", getApplicationContext().MODE_MULTI_PROCESS);
             SharedPreferences.Editor ed = sp.edit();
             String txt = "last Message \n" + "ClientPackageName : " + packageName + "\n" + "Client PID : " + clientPID + "\n Message From Client : " + messageFromClient;
